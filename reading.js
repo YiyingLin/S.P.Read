@@ -30,7 +30,7 @@ export default class Reading extends React.Component {
       totalTime: 0,
       curPos: 1,
       paused: false,
-      interval: 300,
+      interval: 250,
       highestSpeed: 0
     };
 
@@ -77,7 +77,7 @@ export default class Reading extends React.Component {
   speedUp() {
     if (this.state.paused)
       return;
-    if (this.state.interval > 150) {
+    if (this.state.interval > 100) {
       this.setState({interval: this.state.interval - 10}, this.refreshInterval);
     }
   }
