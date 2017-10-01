@@ -1,6 +1,6 @@
 class EssayParser {
-  constructor(essayStr, sentenceDelay, paragraphDelay) {
-    this.essay = essayStr.split(' ');
+  constructor(essay, sentenceDelay, paragraphDelay) {
+    this.essay = essay;
     this.sentenceDelay = sentenceDelay;
     this.paragraphDelay = paragraphDelay;
     this.curr = 0;
@@ -10,8 +10,8 @@ class EssayParser {
     this.delay = 0;
 
     // set up constants
-    const SETENCE_DELIMS_ARR = ['.', '?', '!'];
-    const PARAGRAPH_DELIMS_ARR = [''];
+    const SETENCE_DELIMS_ARR = ['.', '?', '!', '"'];
+    const PARAGRAPH_DELIMS_ARR = ['_'];
     this.SETENCE_DELIMS_SET = new Set();
     this.PARAGRAPH_DELIMS_SET = new Set();
     SETENCE_DELIMS_ARR.forEach(e => this.SETENCE_DELIMS_SET.add(e));
@@ -46,6 +46,8 @@ class EssayParser {
     }
     else if (this.PARAGRAPH_DELIMS_SET.has(endChar)) {
       this.state = "D";
+      // strip off the paragraph delim
+      this.essay[this.curr] = word.substring(0, word.length - 2);
       this.delay = this.paragraphDelay;
       this.nextState();
     }
