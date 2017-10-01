@@ -18,7 +18,8 @@ export default class Bread extends React.Component {
       summary1: null,
       summary2: null,
       summary3: null,
-      scene: 0
+      scene: 0,
+      viewAngle: []
     };
   }
 
@@ -69,7 +70,8 @@ export default class Bread extends React.Component {
             color: 'red',
             transform: [{translate: [1.3, 0, 0.88]}, {rotateY: -120}, {scale: 0.6}],
           }}
-      />)
+      />),
+      viewAngle: VrHeadModel.rotation()
     })
   };
 
@@ -81,7 +83,8 @@ export default class Bread extends React.Component {
 
   startReading = () => {
     this.setState({
-      scene: 1
+      scene: 1,
+      viewAngle: VrHeadModel.rotation()
     })
   };
 
@@ -89,7 +92,6 @@ export default class Bread extends React.Component {
     const summary1 = this.state.summary1;
     const summary2 = this.state.summary2;
     const summary3 = this.state.summary3;
-    const alert = this.state.alert;
 
     if (this.state.scene === 0) {
 
@@ -139,7 +141,12 @@ export default class Bread extends React.Component {
     );
 
     } else {
-      return (<Reading/>);
+        const angleOfRotation = this.state.viewAngle;
+        return (<Reading
+                angleX = { VrHeadModel.rotation()[0] }
+                angleY = { VrHeadModel.rotation()[1] }
+                angleZ = { VrHeadModel.rotation()[2] }
+              />);   
     }
   }
 };

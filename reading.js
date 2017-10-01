@@ -20,9 +20,15 @@ export default class Reading extends React.Component {
         return { indexToRender: this.state.indexToRender + 1 };
       });
     }, 250);
+
+    console.log(this.props.angleX);
   }
 
   render() {
+    const angleX = this.props.angleX;
+    const angleY = this.props.angleY;
+    const angleZ = this.props.angleZ;
+
     return (
       <View>
         <Text
@@ -35,7 +41,7 @@ export default class Reading extends React.Component {
             paddingRight: 0.2,
             textAlign: 'center',
             textAlignVertical: 'center',
-            transform: [{translate: [0, 0, -3]}],
+            transform: [{rotateX: angleX}, {rotateY: angleY}, {rotateZ: angleZ}, {translate: [0, 0, -3]}],
           }}>
           {this.state.passage[this.state.indexToRender]}
         </Text>
