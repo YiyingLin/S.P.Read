@@ -1,0 +1,1 @@
+Our project is a WebVR app called Speed Passive Read. Our goal is to make reading more interesting and efficient. Our target audience are people who struggle with reading or people who want to read faster. Using our app, the user reads passively because their eyes are fixed at one point, like you just experienced! This significantly speeds up reading.

@@ -65,7 +65,7 @@ export default class Bread extends React.Component {
               textAlignVertical: 'top',
               transform: [{translate: [1.3, -0.1, -0.88]}, {rotateY: -60}, {scale: 0.6}],
             }}>
-            Quotes from Little Prince by Antoine de Saint-Exupéry
+            Presentation Introduction by S.P.Read
           </Text>)
     })
   };
