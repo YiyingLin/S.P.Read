@@ -11,7 +11,7 @@ import {
   Plane,
 } from 'react-vr';
 
-const PASSAGE = 'Then our mother came in, And she said to us two, “Did you have any fun? Tell me. What did you do? ”And Sally and I did not know what to say. Should we tell her, The things that went on, there that day? Well... what would YOU do, If your mother asked you? Then our mother came in, And she said to us two, “Did you have any fun? Tell me. What did you do? ”And Sally and I did not know what to say. Should we tell her, The things that went on, there that day? Well... what would YOU do, If your mother asked you? Then our mother came in, And she said to us two, “Did you have any fun? Tell me. What did you do? ”And Sally and I did not know what to say. Should we tell her, The things that went on, there that day? Well... what would YOU do, If your mother asked you?';
+const PASSAGE = 'Then our mother came in, And she said to us two, “Did you have any fun? Tell me. What did you do?“ And Sally and I did not know what to say. Should we tell her, The things that went on, there that day? Well... what would YOU do, If your mother asked you?';
 
 export default class Reading extends React.Component {
   constructor(props) {
@@ -21,68 +21,68 @@ export default class Reading extends React.Component {
       displayWord: "",
       xPosition: '',
       yPosiitons: -1,
-      interval: 280,
-      previousInterval: 0,
-      pauseInterval: 9999999999999,
       bgColor: 0,
       startTime: Date.now(),
       totalTime: 0,
-      curPos: 1
+      curPos: 1,
+      paused: false,
+      interval: 500
     };
 
-    this.timer = setInterval(() => {
+    this.refreshInterval();
+  }
+
+  refreshInterval() {
+    // clear the previous before we lose reference
+    clearInterval(this.state.timer);
+
+    // set a new one
+    this.state.timer = setInterval(() => {
       this.setState({
         totalTime: (this.state.parser.getCurrentPosition() == this.state.parser.getTotalLength()) ? 
           this.state.totalTime : (Date.now() - this.state.startTime) / 1000,
         curPos: this.state.parser.getCurrentPosition()
       });
       this.setState(previousState => {
+        const word = this.state.parser.nextState();
         return {
-          displayWord: this.state.parser.nextState()
+          displayWord: word
          };
       });
-    }, 280);
+    }, this.state.interval);
+  }
+
+  togglePause() {
+    console.log(this.state.paused);
+    if (this.state.paused) {
+      this.refreshInterval();
+      this.state.paused = false;
+    }
+    else {
+      clearInterval(this.state.timer);
+      this.state.paused = true;
+    }
   }
 
   deconstructEvent = (nativeEvent) => {
     switch (nativeEvent.inputEvent.eventType) {
       case "mousemove":
+        if (this.state.paused) {
+          return;
+        }
+        
         if (this.state.xPosition ==='') {
           this.setState({xPosition: nativeEvent.inputEvent.viewportX}, () => console.log(this.state.xPosition))
         } else if (this.state.xPosition < nativeEvent.inputEvent.viewportX) {
           this.setState({xPosition: nativeEvent.inputEvent.viewportX}, () => {
             if (this.state.interval > 150) {
-              this.setState({interval: this.state.interval - 10}, () => {
-                clearInterval(this.timer)
-                this.timer = setInterval(() => {
-                  this.setState({
-                    totalTime: (this.state.parser.getCurrentPosition() == this.state.parser.getTotalLength()) ? 
-                      this.state.totalTime : (Date.now() - this.state.startTime) / 1000,
-                    curPos: this.state.parser.getCurrentPosition()
-                  });
-                  this.setState(previousState => {
-                    return { displayWord: this.state.parser.nextState() };
-                  });
-                }, this.state.interval);
-              })
+              this.setState({interval: this.state.interval - 10}, this.refreshInterval);
             }
           })
         } else if (this.state.xPosition > nativeEvent.inputEvent.viewportX) {
           this.setState({xPosition: nativeEvent.inputEvent.viewportX}, () => {
             if (this.state.interval < 1000) {
-              this.setState({interval: this.state.interval + 10}, () => {
-                clearInterval(this.timer)
-                this.timer = setInterval(() => {
-                  this.setState({
-                    totalTime: (this.state.parser.getCurrentPosition() == this.state.parser.getTotalLength()) ? 
-                      this.state.totalTime : (Date.now() - this.state.startTime) / 1000,
-                    curPos: this.state.parser.getCurrentPosition()
-                  });
-                  this.setState(previousState => {
-                    return { displayWord: this.state.parser.nextState() };
-                  });
-                }, this.state.interval);
-              })
+              this.setState({interval: this.state.interval + 10}, this.refreshInterval);
             }
           })
         }
@@ -90,38 +90,6 @@ export default class Reading extends React.Component {
           this.setState({yPosition: nativeEvent.viewPortY})
         }
       default:
-
-    }
-  }
-
-  pauseToggle = (event) => {
-    console.log(this.state.interval)
-    if (this.state.interval > 99999999) {
-      this.setState({interval: this.state.previousInterval}, () => {
-        this.setState({previousInterval: 0}, () => {
-          clearInterval(this.timer)
-          this.timer = setInterval(() => {
-            this.setState(previousState => {
-              return {
-                displayWord: this.state.parser.nextState()
-               };
-            });
-          }, this.state.interval);
-        })
-      })
-    } else {
-      this.setState({previousInterval: this.state.interval}, () => {
-        this.setState({interval: this.state.pauseInterval}, () => {
-          clearInterval(this.timer)
-          this.timer = setInterval(() => {
-            this.setState(previousState => {
-              return {
-                displayWord: this.state.parser.nextState()
-               };
-            });
-          }, this.state.interval);
-        })
-      })
     }
   }
 
@@ -147,23 +115,23 @@ export default class Reading extends React.Component {
         >
         <Pano source={asset(bgColors[this.state.bgColor])}/>
         <Text
-            style={{
-              position: 'absolute',
-              backgroundColor: 'transparent',
-              fontSize: 0.8,
-              fontWeight: '400',
-              layoutOrigin: [0.5, 0.5],
-              paddingLeft: 0.2,
-              paddingRight: 0.2,
-              textAlign: 'center',
-              textAlignVertical: 'center',
-              transform: [{rotateX: angleX}, {rotateY: angleY}, {rotateZ: angleZ}, {translate: [0, 0, -3]}],
-            }}>
-            {this.state.displayWord}
+          style={{
+            position: 'absolute',
+            backgroundColor: 'transparent',
+            fontSize: 0.8,
+            fontWeight: '400',
+            layoutOrigin: [0.5, 0.5],
+            paddingLeft: 0.2,
+            paddingRight: 0.2,
+            textAlign: 'center',
+            textAlignVertical: 'center',
+            transform: [{rotateX: angleX}, {rotateY: angleY}, {rotateZ: angleZ}, {translate: [0, 0, -3]}],
+          }}>
+          {this.state.displayWord}
         </Text>
 
         <VrButton
-          onClick={() => this.pauseToggle()}
+          onClick={() => this.togglePause()}
           >
           <Plane
             dimWidth={1}
@@ -178,7 +146,7 @@ export default class Reading extends React.Component {
         </VrButton>
 
         <VrButton
-          onClick={() => this.pauseToggle()}
+          onClick={() => this.togglePause()}
           >
           <Text
             style={{
@@ -203,7 +171,7 @@ export default class Reading extends React.Component {
         </VrButton>
 
         <VrButton
-          onClick={() => this.pauseToggle()}
+          onClick={() => this.togglePause()}
           >
           <Text
             style={{
@@ -390,8 +358,6 @@ export default class Reading extends React.Component {
             }}>
             Average speed: { averageSpeed.toPrecision(5) } words per minute.
           </Text>
-
-
       </View>
     );
   }
