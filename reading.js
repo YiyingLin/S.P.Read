@@ -21,7 +21,7 @@ export default class Reading extends React.Component {
       xPosition: '',
       yPosiitons: -1,
       interval: 1000,
-      previousInterval: '',
+      previousInterval: 0,
       pauseInterval: 9999999999999
     };
 
@@ -76,7 +76,7 @@ export default class Reading extends React.Component {
 
   pauseToggle = (event) => {
     console.log(this.state.interval)
-    if (this.state.interval === 9999999999999) {
+    if (this.state.interval > 99999999) {
       this.setState({interval: this.state.previousInterval}, () => {
         this.setState({previousInterval: 0}, () => {
           clearInterval(this.timer)
@@ -114,12 +114,9 @@ export default class Reading extends React.Component {
       <View
         onInput={(event) => this.deconstructEvent(event.nativeEvent)}
         >
-        <Pano source={asset('chess-world.jpg')}/>
+        <Pano source={asset('bgimg.jpg')}/>
         <VrButton
           onClick={() => this.pauseToggle()}
-          style={{
-            backgroundColor: 'red',
-          }}
           >
           <Text
             style={{
