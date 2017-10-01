@@ -19,7 +19,7 @@ export default class Reading extends React.Component {
       displayWord: "",
       xPosition: '',
       yPosiitons: -1,
-      interval: 1000
+      interval: 280
     };
 
     this.timer = setInterval(() => {
@@ -28,7 +28,7 @@ export default class Reading extends React.Component {
           displayWord: this.state.parser.nextState()
          };
       });
-    }, 1000);
+    }, 280);
   }
 
   deconstructEvent = (nativeEvent) => {
@@ -81,7 +81,7 @@ export default class Reading extends React.Component {
       <View
         onInput={(event) => this.deconstructEvent(event.nativeEvent)}
         >
-        <Pano source={asset('chess-world.jpg')}/>
+        <Pano source={asset('bgimg.jpg')}/>
         <Text
           style={{
             backgroundColor: 'transparent',
