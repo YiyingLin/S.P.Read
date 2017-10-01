@@ -42,7 +42,7 @@ class EssayParser {
     if (this.SETENCE_DELIMS_SET.has(endChar)) {
       this.state = "D";
       this.delay = this.sentenceDelay;
-      this.nextState();
+      return this.nextState();
     }
     else if (this.PARAGRAPH_DELIMS_SET.has(endChar)) {
       this.state = "D";
@@ -50,7 +50,7 @@ class EssayParser {
       word = word.substring(0, word.length - 2);
       this.essay[this.curr] = word;
       this.delay = this.paragraphDelay;
-      this.nextState();
+      return this.nextState();
     }
     else {
       this.curr++;
