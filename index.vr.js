@@ -32,7 +32,8 @@ export default class Bread extends React.Component {
             color: 'red',
             transform: [{translate: [1.3, 0, -0.88]}, {rotateY: -60}, {scale: 0.6}],
           }}
-      />)
+      />),
+      viewAngle: VrHeadModel.rotation()
     })
   };
 
@@ -51,7 +52,8 @@ export default class Bread extends React.Component {
             color: 'red',
             transform: [{translate: [-1.3, 0, -0.88]}, {rotateY: 60}, {scale: 0.6}],
           }}
-      />)
+      />),
+      viewAngle: VrHeadModel.rotation()
     })
   };
 
@@ -98,53 +100,67 @@ export default class Bread extends React.Component {
     return (
       <View>
         <Pano source={asset('library.jpg')}/>
-        <Plane
-          dimWidth={0.5}
-          dimDepth={1}
-          style={{
-            color: 'red',
-            transform: [{translate: [1.2, -0.7, -1]}, {rotateY: -90}, {rotateX: -90}, {scale: 0.6}],
-          }}
-          onEnter={() => this.showSummary1()}
-          onExit={() => this.hideSummary1()}
-        />
-        <Plane
-          dimWidth={0.5}
-          dimDepth={1}
-          style={{
-            color: 'red',
-            transform: [{translate: [-1.8, -0.7, -1.2]}, {rotateY: -90}, {rotateX: -90}, {scale: 0.6}],
-          }}
-          onEnter={() => this.showSummary2()}
-          onExit={() => this.hideSummary2()}
-        />
         <VrButton
-        style={{width: 0.7}}
-        onClick={()=>this.startReading()}>
-        <Plane
-          dimWidth={0.5}
-          dimDepth={1}
-          style={{
-            color: 'red',
-            transform: [{translate: [2.1, -0.7, 1.2]}, {rotateY: -90}, {rotateX: -90}, {scale: 0.6}],
-          }}
-          onEnter={() => this.showSummary3()}
-          onExit={() => this.hideSummary3()}
-        />
+          style={{width: 0.7}}
+          onClick={()=>this.startReading()}>
+          <Plane
+            dimWidth={0.5}
+            dimDepth={1}
+            style={{
+              color: 'red',
+              transform: [{translate: [1.2, -0.7, -1]}, {rotateY: -90}, {rotateX: -90}, {scale: 0.6}],
+            }}
+            onEnter={() => this.showSummary1()}
+            onExit={() => this.hideSummary1()}
+          />
         </VrButton>
+
+        <VrButton
+          style={{width: 0.7}}
+          onClick={()=>this.startReading()}>
+          <Plane
+            dimWidth={0.5}
+            dimDepth={1}
+            style={{
+              color: 'red',
+              transform: [{translate: [-1.8, -0.7, -1.2]}, {rotateY: -90}, {rotateX: -90}, {scale: 0.6}],
+            }}
+            onEnter={() => this.showSummary2()}
+            onExit={() => this.hideSummary2()}
+          />
+        </VrButton>
+
+        <VrButton
+          style={{width: 0.7}}
+          onClick={()=>this.startReading()}>
+          <Plane
+            dimWidth={0.5}
+            dimDepth={1}
+            style={{
+              color: 'red',
+              transform: [{translate: [2.1, -0.7, 1.2]}, {rotateY: -90}, {rotateX: -90}, {scale: 0.6}],
+            }}
+            onEnter={() => this.showSummary3()}
+            onExit={() => this.hideSummary3()}
+          />
+        </VrButton>
+
         { summary1 }
         { summary2 }
         { summary3 }
+
       </View>
     );
 
-    } else {
-        const angleOfRotation = this.state.viewAngle;
-        return (<Reading
-                angleX = { VrHeadModel.rotation()[0] }
-                angleY = { VrHeadModel.rotation()[1] }
-                angleZ = { VrHeadModel.rotation()[2] }
-              />);   
+  } else {
+      const angleOfRotation = this.state.viewAngle;
+      return (
+        <Reading
+          angleX = { VrHeadModel.rotation()[0] }
+          angleY = { VrHeadModel.rotation()[1] }
+          angleZ = { VrHeadModel.rotation()[2] }
+        />
+      );   
     }
   }
 };
