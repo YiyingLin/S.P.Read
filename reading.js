@@ -1,3 +1,5 @@
+const EssayParser = require('./essay-parser.js');
+
 import React from 'react';
 import {
   AppRegistry,
@@ -7,21 +9,67 @@ import {
   View,
 } from 'react-vr';
 
+const PASSAGE = 'Then our mother came in, And she said to us two, “Did you have any fun? Tell me. What did you do? ”And Sally and I did not know what to say. Should we tell her, The things that went on, there that day? Well... what would YOU do, If your mother asked you? Then our mother came in, And she said to us two, “Did you have any fun? Tell me. What did you do? ”And Sally and I did not know what to say. Should we tell her, The things that went on, there that day? Well... what would YOU do, If your mother asked you? Then our mother came in, And she said to us two, “Did you have any fun? Tell me. What did you do? ”And Sally and I did not know what to say. Should we tell her, The things that went on, there that day? Well... what would YOU do, If your mother asked you?';
+
 export default class Reading extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      passage: 'Then our mother came in, And she said to us two,“Did you have any fun? Tell me. What did you do?”And Sally and I did not know what to say.Should we tell her, The things that went on, there that day? Well... what would YOU do, If your mother asked you?'.split(' '),
-      indexToRender: 0
+      parser: new EssayParser(PASSAGE, 2, 0),
+      displayWord: "",
+      xPosition: '',
+      yPosiitons: -1,
+      interval: 1000
     };
 
-    setInterval(() => {
+    this.timer = setInterval(() => {
       this.setState(previousState => {
-        return { indexToRender: this.state.indexToRender + 1 };
+        return {
+          displayWord: this.state.parser.nextState()
+         };
       });
-    }, 250);
+    }, 1000);
+  }
 
-    console.log(this.props.angleX);
+  deconstructEvent = (nativeEvent) => {
+    console.log('haha')
+    switch (nativeEvent.inputEvent.eventType) {
+      case "mousemove":
+        if (this.state.xPosition ==='') {
+          this.setState({xPosition: nativeEvent.inputEvent.viewportX}, () => console.log(this.state.xPosition))
+        } else if (this.state.xPosition < nativeEvent.inputEvent.viewportX) {
+          this.setState({xPosition: nativeEvent.inputEvent.viewportX}, () => {
+            if (this.state.interval > 100) {
+              this.setState({interval: this.state.interval - 5}, () => {
+                clearInterval(this.timer)
+                this.timer = setInterval(() => {
+                  this.setState(previousState => {
+                    return { displayWord: this.state.parser.nextState() };
+                  });
+                }, this.state.interval);
+              })
+            }
+          })
+        } else if (this.state.xPosition > nativeEvent.inputEvent.viewportX) {
+          this.setState({xPosition: nativeEvent.inputEvent.viewportX}, () => {
+            if (this.state.interval < 1000) {
+              this.setState({interval: this.state.interval + 5}, () => {
+                clearInterval(this.timer)
+                this.timer = setInterval(() => {
+                  this.setState(previousState => {
+                    return { displayWord: this.state.parser.nextState() };
+                  });
+                }, this.state.interval);
+              })
+            }
+          })
+        }
+        if (this.state.yPosition < 0) {
+          this.setState({yPosition: nativeEvent.viewPortY})
+        }
+      default:
+
+    }
   }
 
   render() {
@@ -30,10 +78,13 @@ export default class Reading extends React.Component {
     const angleZ = this.props.angleZ;
 
     return (
-      <View>
+      <View
+        onInput={(event) => this.deconstructEvent(event.nativeEvent)}
+        >
+        <Pano source={asset('chess-world.jpg')}/>
         <Text
           style={{
-            backgroundColor: '#777879',
+            backgroundColor: 'transparent',
             fontSize: 0.8,
             fontWeight: '400',
             layoutOrigin: [0.5, 0.5],
@@ -43,7 +94,7 @@ export default class Reading extends React.Component {
             textAlignVertical: 'center',
             transform: [{rotateX: angleX}, {rotateY: angleY}, {rotateZ: angleZ}, {translate: [0, 0, -3]}],
           }}>
-          {this.state.passage[this.state.indexToRender]}
+          {this.state.displayWord}
         </Text>
       </View>
     );
