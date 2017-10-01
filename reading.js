@@ -10,7 +10,7 @@ import {
   VrButton,
 } from 'react-vr';
 
-const PASSAGE = 'Then our mother came in, And she said to us two, “Did you have any fun? Tell me. What did you do? ”And Sally and I did not know what to say. Should we tell her, The things that went on, there that day? Well... what would YOU do, If your mother asked you?';
+const PASSAGE = 'Then our mother came in, And she said to us two, “Did you have any fun? Tell me. What did you do?“ And Sally and I did not know what to say. Should we tell her, The things that went on, there that day? Well... what would YOU do, If your mother asked you?';
 
 export default class Reading extends React.Component {
   constructor(props) {
@@ -92,9 +92,11 @@ export default class Reading extends React.Component {
     return (
       <View
         onInput={(event) => this.deconstructEvent(event.nativeEvent)}
-        onClick={() => this.togglePause()}
         >
         <Pano source={asset('bgimg.jpg')}/>
+          <VrButton
+            onClick={() => this.togglePause()}
+          >
           <Text
             style={{
               backgroundColor: 'transparent',
@@ -109,6 +111,7 @@ export default class Reading extends React.Component {
             }}>
             {this.state.displayWord}
           </Text>
+          </VrButton>
       </View>
     );
   }
