@@ -1,11 +1,14 @@
 import React from 'react';
+import Reading from './reading';
 import {
   AppRegistry,
+  VrHeadModel,
   asset,
   Pano,
   Text,
   View,
   Plane,
+  VrButton,
 } from 'react-vr';
 
 export default class Bread extends React.Component {
@@ -14,7 +17,8 @@ export default class Bread extends React.Component {
     this.state = {
       summary1: null,
       summary2: null,
-      summary3: null
+      summary3: null,
+      scene: 0
     };
   }
 
@@ -75,15 +79,25 @@ export default class Bread extends React.Component {
     })
   };
 
+  startReading = () => {
+    this.setState({
+      scene: 1
+    })
+  };
+
   render() {
     const summary1 = this.state.summary1;
     const summary2 = this.state.summary2;
     const summary3 = this.state.summary3;
+    const alert = this.state.alert;
+
+    if (this.state.scene === 0) {
 
     return (
       <View>
 
         <Pano source={asset('library.jpg')}/>
+        
         <Plane
           dimWidth={0.5}
           dimDepth={1}
@@ -104,6 +118,9 @@ export default class Bread extends React.Component {
           onEnter={() => this.showSummary2()}
           onExit={() => this.hideSummary2()}
         />
+        <VrButton
+        style={{width: 0.7}}
+        onClick={()=>this.startReading()}>
         <Plane
           dimWidth={0.5}
           dimDepth={1}
@@ -114,11 +131,16 @@ export default class Bread extends React.Component {
           onEnter={() => this.showSummary3()}
           onExit={() => this.hideSummary3()}
         />
+        </VrButton>
         { summary1 }
         { summary2 }
         { summary3 }
       </View>
     );
+
+    } else {
+      return (<Reading/>);
+    }
   }
 };
 
