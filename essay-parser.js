@@ -54,6 +54,14 @@ class EssayParser {
     }
     return word;
   }
+
+  getCurrentPosition() {
+    return this.curr + 1;
+  }
+
+  getTotalLength() {
+    return this.end + 1;
+  }
 }
 
 module.exports = EssayParser;

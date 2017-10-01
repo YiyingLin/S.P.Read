@@ -22,6 +22,8 @@ export default class Bread extends React.Component {
       scene: 0,
       viewAngle: []
     };
+
+    this.changeScene = this.changeScene.bind(this);
   }
 
   showSummary1 = () => {
@@ -53,7 +55,7 @@ export default class Bread extends React.Component {
               textAlignVertical: 'top',
               transform: [{translate: [1.3, 0, -0.88]}, {rotateY: -60}, {scale: 0.6}],
             }}>
-            Cinderella/n Author: Chen
+            Cinderella Author: Chen
           </Text>)
     })
   };
@@ -107,10 +109,15 @@ export default class Bread extends React.Component {
     })
   };
 
-  startReading = () => {
+  changeScene = (isRestart) => {
+    const currentScene = this.state.scene;
     this.setState({
-      scene: 1,
-      viewAngle: VrHeadModel.rotation()
+      scene: (currentScene + 1 + isRestart) % 2,
+      viewAngle: VrHeadModel.rotation(),
+      summary1: null,
+      summary2: null,
+      summary3: null,
+      text1: null
     })
   };
 
@@ -127,7 +134,7 @@ export default class Bread extends React.Component {
         <Pano source={asset('library.jpg')}/>
         <VrButton
           style={{width: 0.7}}
-          onClick={()=>this.startReading()}>
+          onClick={()=>this.changeScene(0)}>
           <Plane
             dimWidth={0.5}
             dimDepth={1}
@@ -160,7 +167,7 @@ export default class Bread extends React.Component {
 
         <VrButton
           style={{width: 0.7}}
-          onClick={()=>this.startReading()}>
+          onClick={()=>this.changeScene(0)}>
           <Plane
             dimWidth={0.5}
             dimDepth={1}
@@ -193,7 +200,7 @@ export default class Bread extends React.Component {
 
         <VrButton
           style={{width: 0.7}}
-          onClick={()=>this.startReading()}>
+          onClick={()=>this.changeScene(0)}>
           <Plane
             dimWidth={0.5}
             dimDepth={1}
@@ -223,10 +230,11 @@ export default class Bread extends React.Component {
           </Text>
         </VrButton>
 
+        { text1 }
         { summary1 }
         { summary2 }
         { summary3 }
-        { text1 }
+        
 
       </View>
     );
@@ -235,9 +243,10 @@ export default class Bread extends React.Component {
       const angleOfRotation = this.state.viewAngle;
       return (
         <Reading
-          angleX = { VrHeadModel.rotation()[0] }
-          angleY = { VrHeadModel.rotation()[1] }
-          angleZ = { VrHeadModel.rotation()[2] }
+          angleX = { angleOfRotation[0] }
+          angleY = { angleOfRotation[1] }
+          angleZ = { angleOfRotation[2] }
+          changeScene = { (isRestart) => this.changeScene(isRestart) }
         />
       );   
     }
