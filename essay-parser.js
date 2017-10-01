@@ -47,7 +47,8 @@ class EssayParser {
     else if (this.PARAGRAPH_DELIMS_SET.has(endChar)) {
       this.state = "D";
       // strip off the paragraph delim
-      this.essay[this.curr] = word.substring(0, word.length - 2);
+      word = word.substring(0, word.length - 2);
+      this.essay[this.curr] = word;
       this.delay = this.paragraphDelay;
       this.nextState();
     }
