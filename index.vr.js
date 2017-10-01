@@ -63,7 +63,7 @@ export default class Bread extends React.Component {
               textAlignVertical: 'top',
               transform: [{translate: [1.3, -0.1, -0.88]}, {rotateY: -60}, {scale: 0.6}],
             }}>
-            Little Prince by Antoine de Saint-Exupéry
+            Quotes from Little Prince by Antoine de Saint-Exupéry
           </Text>)
     })
   };
@@ -103,7 +103,7 @@ export default class Bread extends React.Component {
               textAlignVertical: 'top',
               transform: [{translate: [-1.3, 0, -1.20]}, {rotateY: 60}, {scale: 0.6}],
             }}>
-            Quote by Steve Jobs
+            Cinderella by Charles Perrault
           </Text>)
     })
   };
