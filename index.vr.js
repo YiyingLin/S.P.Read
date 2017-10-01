@@ -29,7 +29,8 @@ export default class Bread extends React.Component {
           dimWidth={1}
           dimDepth={2}
           style={{
-            color: 'red',
+            color: 'white',
+            opacity: 0.5,
             transform: [{translate: [1.3, 0, -0.88]}, {rotateY: -60}, {scale: 0.6}],
           }}
       />),
@@ -49,7 +50,8 @@ export default class Bread extends React.Component {
           dimWidth={1}
           dimDepth={2}
           style={{
-            color: 'red',
+            color: 'white',
+            opacity: 0.5,
             transform: [{translate: [-1.3, 0, -0.88]}, {rotateY: 60}, {scale: 0.6}],
           }}
       />),
@@ -69,7 +71,8 @@ export default class Bread extends React.Component {
           dimWidth={1}
           dimDepth={2}
           style={{
-            color: 'red',
+            color: 'white',
+            opacity: 0.5,
             transform: [{translate: [1.3, 0, 0.88]}, {rotateY: -120}, {scale: 0.6}],
           }}
       />),
@@ -107,12 +110,30 @@ export default class Bread extends React.Component {
             dimWidth={0.5}
             dimDepth={1}
             style={{
-              color: 'red',
+              color: 'white',
               transform: [{translate: [1.2, -0.7, -1]}, {rotateY: -90}, {rotateX: -90}, {scale: 0.6}],
             }}
             onEnter={() => this.showSummary1()}
             onExit={() => this.hideSummary1()}
           />
+          <Text
+            style={{
+              backgroundColor: 'transparent',
+              color: 'black',
+              width: 0.05,
+              fontSize: 0.03,
+              fontWeight: '60',
+              layoutOrigin: [0.5, 0.5],
+              paddingLeft: 0.2,
+              paddingRight: 0.2,
+              textAlign: 'center',
+              textAlignVertical: 'center',
+              transform: [{translate: [1.55, -0.7, -1]}, {rotateY: -90}, {rotateX: -90}, {scale: 0.6}],
+            }}>
+            Cinderella’s mother died while she was a very little child, leaving her to the care of her father and her step-sisters, who were very much older than herself; for Cinderella’s father had been twice married, and her mother was his second wife. Now, Cinderella’s sisters did not love her, and were very unkind to her. As she grew older they made her work as a servant, and even sift the cinders; on which account they used to call her in mockery “Cinderella.” It was not her real name, but she became afterwards so well known by it that her proper one has been forgotten.
+            She was a very sweet-tempered, good girl, however, and everybody (except her cruel sisters) loved her.
+            When they were gone, Cinderella, whose heart was very sad, sat down and cried bitterly; but as she sat sorrowful, thinking of th
+          </Text>
         </VrButton>
 
         <VrButton
@@ -122,12 +143,30 @@ export default class Bread extends React.Component {
             dimWidth={0.5}
             dimDepth={1}
             style={{
-              color: 'red',
+              color: 'white',
               transform: [{translate: [-1.8, -0.7, -1.2]}, {rotateY: -90}, {rotateX: -90}, {scale: 0.6}],
             }}
             onEnter={() => this.showSummary2()}
             onExit={() => this.hideSummary2()}
           />
+          <Text
+            style={{
+              backgroundColor: 'transparent',
+              color: 'black',
+              width: 0.05,
+              fontSize: 0.03,
+              fontWeight: '60',
+              layoutOrigin: [0.5, 0.5],
+              paddingLeft: 0.2,
+              paddingRight: 0.2,
+              textAlign: 'center',
+              textAlignVertical: 'center',
+              transform: [{translate: [-1.45, -0.7, -1.2]}, {rotateY: -90}, {rotateX: -90}, {scale: 0.6}],
+            }}>
+            Cinderella’s mother died while she was a very little child, leaving her to the care of her father and her step-sisters, who were very much older than herself; for Cinderella’s father had been twice married, and her mother was his second wife. Now, Cinderella’s sisters did not love her, and were very unkind to her. As she grew older they made her work as a servant, and even sift the cinders; on which account they used to call her in mockery “Cinderella.” It was not her real name, but she became afterwards so well known by it that her proper one has been forgotten.
+            She was a very sweet-tempered, good girl, however, and everybody (except her cruel sisters) loved her.
+            When they were gone, Cinderella, whose heart was very sad, sat down and cried bitterly; but as she sat sorrowful, thinking of th
+          </Text>
         </VrButton>
 
         <VrButton
@@ -137,12 +176,29 @@ export default class Bread extends React.Component {
             dimWidth={0.5}
             dimDepth={1}
             style={{
-              color: 'red',
+              color: 'white',
               transform: [{translate: [2.1, -0.7, 1.2]}, {rotateY: -90}, {rotateX: -90}, {scale: 0.6}],
             }}
             onEnter={() => this.showSummary3()}
             onExit={() => this.hideSummary3()}
           />
+          <Text
+            style={{
+              backgroundColor: 'transparent',
+              color: 'black',
+              width: 0.05,
+              fontSize: 0.03,
+              fontWeight: '60',
+              layoutOrigin: [0.5, 0.5],
+              paddingLeft: 0.2,
+              paddingRight: 0.2,
+              textAlign: 'center',
+              textAlignVertical: 'center',
+              transform: [{translate: [2.4, -0.7, 1.2]}, {rotateY: -90}, {rotateX: -90}, {scale: 0.6}],
+            }}>
+            Cinderella’s mother died while she was a very little child, leaving her to the care of her father and her step-sisters, who were very much older than herself; for Cinderella’s father had been twice married, and her mother was his second wife. Now, Cinderella’s sisters did not love her, and were very unkind to her. As she grew older they made her work as a servant, and even sift the cinders; on which account they used to call her in mockery “Cinderella.” It was not her real name, but she became afterwards so well known by it that her proper one has been forgotten.
+            She was a very sweet-tempered, good girl, however, and everybody (except her cruel sisters) loved her.
+          </Text>
         </VrButton>
 
         { summary1 }
