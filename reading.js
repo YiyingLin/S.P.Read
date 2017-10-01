@@ -17,12 +17,14 @@ const SteveJobsQuote2 = "Your work is going to fill a large part of your life, a
 
 const TheRaven3 = 'Once upon a midnight dreary, while I pondered, weak and weary,Over many a quaint and curious volume of forgotten lore,  While I nodded, nearly napping, suddenly there came a tapping, As of some one gently rapping, rapping at my chamber door. "Tis some visitor," I muttered, "tapping at my chamber door, Only this and nothing more". Ah, distinctly I remember it was in the bleak December, And each separate dying ember wrought its ghost upon the floor. Eagerly I wished the tomorrow vainly I had sought to borrow. From my books surcease of sorrow, sorrow for the lost Lenore. For the rare and radiant maiden whom the angels name Lenore- Nameless here for evermore.';
 
+const text = [null, LittlePrince1, SteveJobsQuote2, TheRaven3];
 
 export default class Reading extends React.Component {
   constructor(props) {
     super(props);
+    console.log(this.props.textNum);
     this.state = {
-      parser: new EssayParser(LittlePrince1, 2, 0),
+      parser: new EssayParser(text[this.props.textNum], 2, 0),
       displayWord: "",
       bgColor: 0,
       startTime: Date.now(),
@@ -218,7 +220,7 @@ export default class Reading extends React.Component {
               textAlignVertical: 'center',
               transform: [{rotateX: angleX}, {rotateY: angleY}, {rotateZ: angleZ}, {translate: [-1, 1.5, -1.5]}, {rotateX: 45}],
             }}>
-            Background Color
+            Change Background
           </Text>
         </VrButton>
 
@@ -272,7 +274,7 @@ export default class Reading extends React.Component {
               position: 'absolute',
               backgroundColor: 'transparent',
               color: 'white',
-              width: 2,
+              width: 4,
               fontSize: 0.15,
               fontWeight: '300',
               layoutOrigin: [0.5, 0.5],

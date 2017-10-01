@@ -22,7 +22,8 @@ export default class Bread extends React.Component {
       text2: null,
       text3: null,
       scene: 0,
-      viewAngle: []
+      viewAngle: [],
+      textNum: 0
     };
 
     this.changeScene = this.changeScene.bind(this);
@@ -42,16 +43,17 @@ export default class Bread extends React.Component {
           style={{
             position: 'absolute',
             color: 'white',
-            opacity: 0.2,
+            opacity: 0.6,
             transform: [{translate: [1.3, 0, -0.88]}, {rotateY: -60}, {scale: 0.6}],
           }}
       />),
       viewAngle: VrHeadModel.rotation(),
+      textNum: 1,
       text1: (<Text
             style={{
               position: 'absolute',
               backgroundColor: 'transparent',
-              color: 'red',
+              color: 'white',
               width: 1,
               opacity: 1,
               fontSize: 0.15,
@@ -82,16 +84,17 @@ export default class Bread extends React.Component {
           dimDepth={2}
           style={{
             color: 'white',
-            opacity: 0.2,
+            opacity: 0.6,
             transform: [{translate: [-1.3, 0, -0.88]}, {rotateY: 60}, {scale: 0.6}],
           }}
       />),
       viewAngle: VrHeadModel.rotation(),
+      textNum: 2,
       text2: (<Text
             style={{
               position: 'absolute',
               backgroundColor: 'transparent',
-              color: 'red',
+              color: 'white',
               width: 1,
               opacity: 1,
               fontSize: 0.2,
@@ -103,7 +106,7 @@ export default class Bread extends React.Component {
               textAlignVertical: 'top',
               transform: [{translate: [-1.3, 0, -1.20]}, {rotateY: 60}, {scale: 0.6}],
             }}>
-            Quote by Steve Jobs
+            Quotes by Steve Jobs
           </Text>)
     })
   };
@@ -122,16 +125,17 @@ export default class Bread extends React.Component {
           dimDepth={2}
           style={{
             color: 'white',
-            opacity: 0.2,
+            opacity: 0.6,
             transform: [{translate: [1.3, 0, 0.88]}, {rotateY: -120}, {scale: 0.6}],
           }}
       />),
       viewAngle: VrHeadModel.rotation(),
+      textNum: 3,
       text3: (<Text
             style={{
               position: 'absolute',
               backgroundColor: 'transparent',
-              color: 'red',
+              color: 'white',
               width: 0.8,
               opacity: 1,
               fontSize: 0.15,
@@ -163,9 +167,11 @@ export default class Bread extends React.Component {
       summary1: null,
       summary2: null,
       summary3: null,
-      text1: null
-    })
-  };
+      text1: null,
+      text2: null,
+      text3: null
+    });
+  }
 
   render() {
     const summary1 = this.state.summary1;
@@ -182,7 +188,7 @@ export default class Bread extends React.Component {
         <Pano source={asset('library.jpg')}/>
         <VrButton
           style={{width: 0.7}}
-          onClick={()=>this.changeScene(0)}>
+          onClick={()=>this.changeScene()}>
           <Plane
             dimWidth={0.5}
             dimDepth={1}
@@ -215,7 +221,7 @@ export default class Bread extends React.Component {
 
         <VrButton
           style={{width: 0.7}}
-          onClick={()=>this.changeScene(0)}>
+          onClick={()=>this.changeScene()}>
           <Plane
             dimWidth={0.5}
             dimDepth={1}
@@ -248,7 +254,7 @@ export default class Bread extends React.Component {
 
         <VrButton
           style={{width: 0.7}}
-          onClick={()=>this.changeScene(0)}>
+          onClick={()=>this.changeScene()}>
           <Plane
             dimWidth={0.5}
             dimDepth={1}
@@ -278,7 +284,6 @@ export default class Bread extends React.Component {
           </Text>
         </VrButton>
 
-        { text1 }
         { summary1 }
         { summary2 }
         { summary3 }
@@ -291,12 +296,14 @@ export default class Bread extends React.Component {
 
   } else {
       const angleOfRotation = this.state.viewAngle;
+      const whichText = this.state.textNum;
       return (
         <Reading
           angleX = { angleOfRotation[0] }
           angleY = { angleOfRotation[1] }
           angleZ = { angleOfRotation[2] }
-          changeScene = { (i) => this.changeScene() }
+          changeScene = { () => this.changeScene() }
+          textNum = { whichText }
         />
       );
     }
