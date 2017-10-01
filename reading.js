@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-vr';
 
-const PASSAGE = 'Then our mother came in, And she said to us two, “Did you have any fun? Tell me. What did you do? ”And Sally and I did not know what to say. Should we tell her, The things that went on, there that day? Well... what would YOU do, If your mother asked you?';
+const PASSAGE = 'Then our mother came in, And she said to us two, “Did you have any fun? Tell me. What did you do? ”And Sally and I did not know what to say. Should we tell her, The things that went on, there that day? Well... what would YOU do, If your mother asked you? Then our mother came in, And she said to us two, “Did you have any fun? Tell me. What did you do? ”And Sally and I did not know what to say. Should we tell her, The things that went on, there that day? Well... what would YOU do, If your mother asked you? Then our mother came in, And she said to us two, “Did you have any fun? Tell me. What did you do? ”And Sally and I did not know what to say. Should we tell her, The things that went on, there that day? Well... what would YOU do, If your mother asked you?';
 
 export default class Reading extends React.Component {
   constructor(props) {
@@ -32,6 +32,7 @@ export default class Reading extends React.Component {
   }
 
   deconstructEvent = (nativeEvent) => {
+    console.log('haha')
     switch (nativeEvent.inputEvent.eventType) {
       case "mousemove":
         if (this.state.xPosition ==='') {
@@ -39,7 +40,7 @@ export default class Reading extends React.Component {
         } else if (this.state.xPosition < nativeEvent.inputEvent.viewportX) {
           this.setState({xPosition: nativeEvent.inputEvent.viewportX}, () => {
             if (this.state.interval > 100) {
-              this.setState({interval: this.state.interval - 10}, () => {
+              this.setState({interval: this.state.interval - 5}, () => {
                 clearInterval(this.timer)
                 this.timer = setInterval(() => {
                   this.setState(previousState => {
@@ -52,7 +53,7 @@ export default class Reading extends React.Component {
         } else if (this.state.xPosition > nativeEvent.inputEvent.viewportX) {
           this.setState({xPosition: nativeEvent.inputEvent.viewportX}, () => {
             if (this.state.interval < 1000) {
-              this.setState({interval: this.state.interval + 10}, () => {
+              this.setState({interval: this.state.interval + 5}, () => {
                 clearInterval(this.timer)
                 this.timer = setInterval(() => {
                   this.setState(previousState => {
@@ -76,6 +77,7 @@ export default class Reading extends React.Component {
       <View
         onInput={(event) => this.deconstructEvent(event.nativeEvent)}
         >
+        <Pano source={asset('chess-world.jpg')}/>
         <Text
           style={{
             backgroundColor: 'transparent',
