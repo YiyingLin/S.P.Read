@@ -16,24 +16,69 @@ export default class Reading extends React.Component {
     super(props);
     this.state = {
       parser: new EssayParser(PASSAGE, 2, 0),
-      displayWord: ""
+      displayWord: "",
+      xPosition: '',
+      yPosiitons: -1,
+      interval: 1000
     };
 
-    setInterval(() => {
+    this.timer = setInterval(() => {
       this.setState(previousState => {
-        return { 
+        return {
           displayWord: this.state.parser.nextState()
          };
       });
-    }, 250);
+    }, 1000);
+  }
+
+  deconstructEvent = (nativeEvent) => {
+    switch (nativeEvent.inputEvent.eventType) {
+      case "mousemove":
+        if (this.state.xPosition ==='') {
+          this.setState({xPosition: nativeEvent.inputEvent.viewportX}, () => console.log(this.state.xPosition))
+        } else if (this.state.xPosition < nativeEvent.inputEvent.viewportX) {
+          this.setState({xPosition: nativeEvent.inputEvent.viewportX}, () => {
+            if (this.state.interval > 100) {
+              this.setState({interval: this.state.interval - 10}, () => {
+                clearInterval(this.timer)
+                this.timer = setInterval(() => {
+                  this.setState(previousState => {
+                    return { displayWord: this.state.parser.nextState() };
+                  });
+                }, this.state.interval);
+              })
+            }
+          })
+        } else if (this.state.xPosition > nativeEvent.inputEvent.viewportX) {
+          this.setState({xPosition: nativeEvent.inputEvent.viewportX}, () => {
+            if (this.state.interval < 1000) {
+              this.setState({interval: this.state.interval + 10}, () => {
+                clearInterval(this.timer)
+                this.timer = setInterval(() => {
+                  this.setState(previousState => {
+                    return { displayWord: this.state.parser.nextState() };
+                  });
+                }, this.state.interval);
+              })
+            }
+          })
+        }
+        if (this.state.yPosition < 0) {
+          this.setState({yPosition: nativeEvent.viewPortY})
+        }
+      default:
+
+    }
   }
 
   render() {
     return (
-      <View>
+      <View
+        onInput={(event) => this.deconstructEvent(event.nativeEvent)}
+        >
         <Text
           style={{
-            backgroundColor: '#777879',
+            backgroundColor: 'transparent',
             fontSize: 0.8,
             fontWeight: '400',
             layoutOrigin: [0.5, 0.5],

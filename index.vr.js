@@ -95,9 +95,7 @@ export default class Bread extends React.Component {
 
     return (
       <View>
-
         <Pano source={asset('library.jpg')}/>
-        
         <Plane
           dimWidth={0.5}
           dimDepth={1}
