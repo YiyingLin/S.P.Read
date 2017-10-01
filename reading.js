@@ -10,13 +10,18 @@ import {
   VrButton,
 } from 'react-vr';
 
-const PASSAGE = 'Then our mother came in, And she said to us two, “Did you have any fun? Tell me. What did you do? ”And Sally and I did not know what to say. Should we tell her, The things that went on, there that day? Well... what would YOU do, If your mother asked you?';
+const LittlePrince1 = 'All men have stars, but they are not the same things for different people. For some, who are travelers, the stars are guides. For others they are no more than little lights in the sky. For others, who are scholars, they are problems... But all these stars are silent. You-You alone will have stars as no one else has them... In one of the stars I shall be living. In one of them I shall be laughing. And so it will be as if all the stars will be laughing when you look at the sky at night..You, only you, will have stars that can laugh! And when your sorrow is comforted (time soothes all sorrows) you will be content that you have known me... You will always be my friend. You will want to laugh with me. And you will sometimes open your window, so, for that pleasure... It will be as if, in place of the stars, I had given you a great number of little bells that knew how to laugh';
+
+const SteveJobsQuote2 = "Your work is going to fill a large part of your life, and the only way to be truly satisfied is to do what you believe is great work. And the only way to do great work is to love what you do. If you haven't found it yet, keep looking. Don't settle. As with all matters of the heart, you'll know when you find it. Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma - which is living with the results of other people's thinking. Don't let the noise of others' opinions drown out your own inner voice. And most important, have the courage to follow your heart and intuition.";
+
+const TheRaven3 = 'Once upon a midnight dreary, while I pondered, weak and weary,Over many a quaint and curious volume of forgotten lore,  While I nodded, nearly napping, suddenly there came a tapping, As of some one gently rapping, rapping at my chamber door. "Tis some visitor," I muttered, "tapping at my chamber door, Only this and nothing more". Ah, distinctly I remember it was in the bleak December, And each separate dying ember wrought its ghost upon the floor. Eagerly I wished the tomorrow vainly I had sought to borrow. From my books surcease of sorrow, sorrow for the lost Lenore. For the rare and radiant maiden whom the angels name Lenore- Nameless here for evermore.';
+
 
 export default class Reading extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      parser: new EssayParser(PASSAGE, 2, 0),
+      parser: new EssayParser(LittlePrince1, 2, 0),
       displayWord: "",
       xPosition: '',
       yPosiitons: -1,
@@ -60,7 +65,7 @@ export default class Reading extends React.Component {
         if (this.state.paused) {
           return;
         }
-        
+
         if (this.state.xPosition ==='') {
           this.setState({xPosition: nativeEvent.inputEvent.viewportX}, () => console.log(this.state.xPosition))
         } else if (this.state.xPosition < nativeEvent.inputEvent.viewportX) {

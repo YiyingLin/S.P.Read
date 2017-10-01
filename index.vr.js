@@ -19,6 +19,8 @@ export default class Bread extends React.Component {
       summary2: null,
       summary3: null,
       text1: null,
+      text2: null,
+      text3: null,
       scene: 0,
       viewAngle: []
     };
@@ -44,16 +46,16 @@ export default class Bread extends React.Component {
               color: 'red',
               width: 1,
               opacity: 1,
-              fontSize: 0.2,
+              fontSize: 0.15,
               fontWeight: '300',
               layoutOrigin: [0.5, 0.5],
               paddingLeft: 0.2,
               paddingRight: 0.2,
               textAlign: 'center',
               textAlignVertical: 'top',
-              transform: [{translate: [1.3, 0, -0.88]}, {rotateY: -60}, {scale: 0.6}],
+              transform: [{translate: [1.3, -0.1, -0.88]}, {rotateY: -60}, {scale: 0.6}],
             }}>
-            Cinderella/n Author: Chen
+            Little Prince by Antoine de Saint-Exupéry
           </Text>)
     })
   };
@@ -72,17 +74,36 @@ export default class Bread extends React.Component {
           dimDepth={2}
           style={{
             color: 'white',
-            opacity: 0.5,
+            opacity: 0.2,
             transform: [{translate: [-1.3, 0, -0.88]}, {rotateY: 60}, {scale: 0.6}],
           }}
       />),
-      viewAngle: VrHeadModel.rotation()
+      viewAngle: VrHeadModel.rotation(),
+      text2: (<Text
+            style={{
+              position: 'absolute',
+              backgroundColor: 'transparent',
+              color: 'red',
+              width: 1,
+              opacity: 1,
+              fontSize: 0.2,
+              fontWeight: '300',
+              layoutOrigin: [0.5, 0.5],
+              paddingLeft: 0.2,
+              paddingRight: 0.2,
+              textAlign: 'center',
+              textAlignVertical: 'top',
+              transform: [{translate: [-1.3, 0, -1.20]}, {rotateY: 60}, {scale: 0.6}],
+            }}>
+            Quote by Steve Jobs
+          </Text>)
     })
   };
 
   hideSummary2 = () => {
     this.setState({
-      summary2: null
+      summary2: null,
+      text2: null
     })
   };
 
@@ -93,17 +114,36 @@ export default class Bread extends React.Component {
           dimDepth={2}
           style={{
             color: 'white',
-            opacity: 0.5,
+            opacity: 0.2,
             transform: [{translate: [1.3, 0, 0.88]}, {rotateY: -120}, {scale: 0.6}],
           }}
       />),
-      viewAngle: VrHeadModel.rotation()
+      viewAngle: VrHeadModel.rotation(),
+      text3: (<Text
+            style={{
+              position: 'absolute',
+              backgroundColor: 'transparent',
+              color: 'red',
+              width: 0.8,
+              opacity: 1,
+              fontSize: 0.15,
+              fontWeight: '300',
+              layoutOrigin: [0.5, 0.5],
+              paddingLeft: 0.2,
+              paddingRight: 0.2,
+              textAlign: 'center',
+              textAlignVertical: 'center',
+              transform: [{translate: [1.3, 0, 0.68]}, {rotateY: -120}, {scale: 0.6}],
+            }}>
+            The Raven by Edgar Allen Poe
+          </Text>)
     })
   };
 
   hideSummary3 = () => {
     this.setState({
-      summary3: null
+      summary3: null,
+      text3: null
     })
   };
 
@@ -119,6 +159,8 @@ export default class Bread extends React.Component {
     const summary2 = this.state.summary2;
     const summary3 = this.state.summary3;
     const text1 = this.state.text1;
+    const text2 = this.state.text2;
+    const text3 = this.state.text3;
 
     if (this.state.scene === 0) {
 
@@ -227,6 +269,8 @@ export default class Bread extends React.Component {
         { summary2 }
         { summary3 }
         { text1 }
+        { text2 }
+        { text3 }
 
       </View>
     );
@@ -239,7 +283,7 @@ export default class Bread extends React.Component {
           angleY = { VrHeadModel.rotation()[1] }
           angleZ = { VrHeadModel.rotation()[2] }
         />
-      );   
+      );
     }
   }
 };
