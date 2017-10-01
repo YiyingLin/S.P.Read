@@ -19,29 +19,33 @@ export default class Reading extends React.Component {
     this.state = {
       parser: new EssayParser(PASSAGE, 2, 0),
       displayWord: "",
-      xPosition: '',
-      yPosiitons: -1,
       bgColor: 0,
       startTime: Date.now(),
       totalTime: 0,
       curPos: 1,
       paused: false,
-      interval: 500
+      interval: 300,
+      highestSpeed: 0
     };
 
     this.refreshInterval();
+    this.speedUp = this.speedUp.bind(this);
+    this.slowDown = this.slowDown.bind(this);
   }
 
   refreshInterval() {
     // clear the previous before we lose reference
     clearInterval(this.state.timer);
+    const currentSpeed = (this.state.parser.getCurrentPosition() == this.state.parser.getTotalLength()) ? 
+      0 : 60 * 1000 / this.state.interval;
 
     // set a new one
     this.state.timer = setInterval(() => {
       this.setState({
         totalTime: (this.state.parser.getCurrentPosition() == this.state.parser.getTotalLength()) ? 
           this.state.totalTime : (Date.now() - this.state.startTime) / 1000,
-        curPos: this.state.parser.getCurrentPosition()
+        curPos: this.state.parser.getCurrentPosition(),
+        highestSpeed: (this.state.highestSpeed < currentSpeed) ? currentSpeed : this.state.highestSpeed
       });
       this.setState(previousState => {
         const word = this.state.parser.nextState();
@@ -56,44 +60,31 @@ export default class Reading extends React.Component {
     console.log(this.state.paused);
     if (this.state.paused) {
       this.refreshInterval();
-      this.state.paused = false;
+      this.setState({paused: false});
     }
     else {
       clearInterval(this.state.timer);
-      this.state.paused = true;
+      this.setState({paused: true});
     }
   }
 
-  deconstructEvent = (nativeEvent) => {
-    switch (nativeEvent.inputEvent.eventType) {
-      case "mousemove":
-        if (this.state.paused) {
-          return;
-        }
-        
-        if (this.state.xPosition ==='') {
-          this.setState({xPosition: nativeEvent.inputEvent.viewportX}, () => console.log(this.state.xPosition))
-        } else if (this.state.xPosition < nativeEvent.inputEvent.viewportX) {
-          this.setState({xPosition: nativeEvent.inputEvent.viewportX}, () => {
-            if (this.state.interval > 150) {
-              this.setState({interval: this.state.interval - 10}, this.refreshInterval);
-            }
-          })
-        } else if (this.state.xPosition > nativeEvent.inputEvent.viewportX) {
-          this.setState({xPosition: nativeEvent.inputEvent.viewportX}, () => {
-            if (this.state.interval < 1000) {
-              this.setState({interval: this.state.interval + 10}, this.refreshInterval);
-            }
-          })
-        }
-        if (this.state.yPosition < 0) {
-          this.setState({yPosition: nativeEvent.viewPortY})
-        }
-      default:
+  speedUp() {
+    if (this.state.paused)
+      return;
+    if (this.state.interval > 150) {
+      this.setState({interval: this.state.interval - 10}, this.refreshInterval);
     }
   }
 
-  changeBgColor = () => {
+  slowDown() {
+    if (this.state.paused)
+      return;
+    if (this.state.interval < 1000) {
+      this.setState({interval: this.state.interval + 10}, this.refreshInterval);
+    }
+  }
+
+  changeBgColor() {
     const currentColor = this.state.bgColor;
     this.setState({ bgColor: (currentColor + 1) % 4 });
   }
@@ -106,13 +97,10 @@ export default class Reading extends React.Component {
     const totalTime = this.state.totalTime;
     const totalWordCount = this.state.parser.getTotalLength();
     const averageSpeed = this.state.curPos / this.state.totalTime * 60;
-    const currentSpeed = (this.state.parser.getCurrentPosition() == this.state.parser.getTotalLength()) ? 
-      0 : 60 * 1000 / this.state.interval;
+    const buttonColor = this.state.paused ? 'green' : 'red';
 
     return (
-      <View
-        onInput={(event) => this.deconstructEvent(event.nativeEvent)}
-        >
+      <View>
         <Pano source={asset(bgColors[this.state.bgColor])}/>
         <Text
           style={{
@@ -138,7 +126,7 @@ export default class Reading extends React.Component {
             dimDepth={1}
             style={{
               position: 'absolute',
-              color: 'red',
+              color: buttonColor,
               opacity: 0.6,
               transform: [{rotateX: angleX}, {rotateY: angleY}, {rotateZ: angleZ}, {translate: [2.5, 0, -3]}, {scale: 0.4}],
             }}
@@ -146,7 +134,7 @@ export default class Reading extends React.Component {
         </VrButton>
 
         <VrButton
-          onClick={() => this.togglePause()}
+          onClick={() => this.speedUp()}
           >
           <Text
             style={{
@@ -171,7 +159,7 @@ export default class Reading extends React.Component {
         </VrButton>
 
         <VrButton
-          onClick={() => this.togglePause()}
+          onClick={() => this.slowDown()}
           >
           <Text
             style={{
@@ -230,32 +218,7 @@ export default class Reading extends React.Component {
         </VrButton>
 
         <VrButton
-          onClick={() => this.props.changeScene(1)}
-          >
-          <Text
-            style={{
-              position: 'absolute',
-              backgroundColor: 'white',
-              opacity: 0.8,
-              color: 'black',
-              width: 0.8,
-              fontSize: 0.1,
-              fontWeight: '300',
-              layoutOrigin: [0.5, 0.5],
-              paddingLeft: 0.2,
-              paddingRight: 0.2,
-              paddingTop: 0.05,
-              paddingBottom: 0.05,
-              textAlign: 'center',
-              textAlignVertical: 'center',
-              transform: [{rotateX: angleX}, {rotateY: angleY}, {rotateZ: angleZ}, {translate: [0, 1.5, -1.5]}, {rotateX: 45}],
-            }}>
-            Restart
-          </Text>
-        </VrButton>
-
-        <VrButton
-          onClick={() => this.props.changeScene(0)}
+          onClick={() => this.props.changeScene()}
           >
           <Text
             style={{
@@ -336,7 +299,7 @@ export default class Reading extends React.Component {
               textAlignVertical: 'center',
               transform: [{rotateX: angleX}, {rotateY: angleY}, {rotateZ: angleZ}, {translate: [0, 3, -1.5]}, {rotateX: 45}],
             }}>
-            Current speed: { currentSpeed.toPrecision(3) } words per minute.
+            Highest speed: { this.state.highestSpeed.toPrecision(5) } words per minute.
           </Text>
 
           <Text

@@ -62,12 +62,17 @@ class EssayParser {
   getTotalLength() {
     return this.end + 1;
   }
+
+  reset() {
+    this.curr = 0;
+    this.state = "P";
+    this.delayCount = 0;
+    this.delay = 0;
+    this.SETENCE_DELIMS_SET = new Set();
+    this.PARAGRAPH_DELIMS_SET = new Set();
+    SETENCE_DELIMS_ARR.forEach(e => this.SETENCE_DELIMS_SET.add(e));
+    PARAGRAPH_DELIMS_ARR.forEach(e => this.PARAGRAPH_DELIMS_SET.add(e));
+  }
 }
 
 module.exports = EssayParser;
-
-// console.log("Hello world!");
-// var parser = new EssayParser("Hello, my name is Nick! Bye bye.", 1, 0);
-// setInterval(() => {
-//   console.log(parser.nextState());
-// }, 250);

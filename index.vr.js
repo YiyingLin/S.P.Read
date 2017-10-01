@@ -24,9 +24,15 @@ export default class Bread extends React.Component {
     };
 
     this.changeScene = this.changeScene.bind(this);
+    this.showSummary1 = this.showSummary1.bind(this);
+    this.hideSummary1 = this.hideSummary1.bind(this);
+    this.showSummary2 = this.showSummary2.bind(this);
+    this.hideSummary2 = this.hideSummary2.bind(this);
+    this.showSummary3 = this.showSummary3.bind(this);
+    this.hideSummary3 = this.hideSummary3.bind(this);
   }
 
-  showSummary1 = () => {
+  showSummary1() {
     this.setState({
       summary1: (<Plane
           dimWidth={1}
@@ -60,14 +66,14 @@ export default class Bread extends React.Component {
     })
   };
 
-  hideSummary1 = () => {
+  hideSummary1() {
     this.setState({
       summary1: null,
       text1: null
     })
   };
 
-  showSummary2 = () => {
+  showSummary2() {
     this.setState({
       summary2: (<Plane
           dimWidth={1}
@@ -82,13 +88,13 @@ export default class Bread extends React.Component {
     })
   };
 
-  hideSummary2 = () => {
+  hideSummary2() {
     this.setState({
       summary2: null
     })
   };
 
-  showSummary3 = () => {
+  showSummary3() {
     this.setState({
       summary3: (<Plane
           dimWidth={1}
@@ -103,16 +109,16 @@ export default class Bread extends React.Component {
     })
   };
 
-  hideSummary3 = () => {
+  hideSummary3() {
     this.setState({
       summary3: null
     })
   };
 
-  changeScene = (isRestart) => {
+  changeScene() {
     const currentScene = this.state.scene;
     this.setState({
-      scene: (currentScene + 1 + isRestart) % 2,
+      scene: (currentScene + 1) % 2,
       viewAngle: VrHeadModel.rotation(),
       summary1: null,
       summary2: null,
@@ -246,7 +252,7 @@ export default class Bread extends React.Component {
           angleX = { angleOfRotation[0] }
           angleY = { angleOfRotation[1] }
           angleZ = { angleOfRotation[2] }
-          changeScene = { (isRestart) => this.changeScene(isRestart) }
+          changeScene = { (i) => this.changeScene() }
         />
       );   
     }
