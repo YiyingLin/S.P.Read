@@ -10,7 +10,7 @@ class EssayParser {
     this.delay = 0;
 
     // set up constants
-    const SETENCE_DELIMS_ARR = ['.', '?', '!', '"', ','];
+    const SETENCE_DELIMS_ARR = ['.', '?', '!', '"', ',', ";"];
     const PARAGRAPH_DELIMS_ARR = ['_'];
     this.SETENCE_DELIMS_SET = new Set();
     this.PARAGRAPH_DELIMS_SET = new Set();
