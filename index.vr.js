@@ -18,6 +18,7 @@ export default class Bread extends React.Component {
       summary1: null,
       summary2: null,
       summary3: null,
+      text1: null,
       scene: 0,
       viewAngle: []
     };
@@ -29,18 +30,38 @@ export default class Bread extends React.Component {
           dimWidth={1}
           dimDepth={2}
           style={{
+            position: 'absolute',
             color: 'white',
-            opacity: 0.5,
+            opacity: 0.2,
             transform: [{translate: [1.3, 0, -0.88]}, {rotateY: -60}, {scale: 0.6}],
           }}
       />),
-      viewAngle: VrHeadModel.rotation()
+      viewAngle: VrHeadModel.rotation(),
+      text1: (<Text
+            style={{
+              position: 'absolute',
+              backgroundColor: 'transparent',
+              color: 'red',
+              width: 1,
+              opacity: 1,
+              fontSize: 0.2,
+              fontWeight: '300',
+              layoutOrigin: [0.5, 0.5],
+              paddingLeft: 0.2,
+              paddingRight: 0.2,
+              textAlign: 'center',
+              textAlignVertical: 'top',
+              transform: [{translate: [1.3, 0, -0.88]}, {rotateY: -60}, {scale: 0.6}],
+            }}>
+            Cinderella/n Author: Chen
+          </Text>)
     })
   };
 
   hideSummary1 = () => {
     this.setState({
-      summary1: null
+      summary1: null,
+      text1: null
     })
   };
 
@@ -97,6 +118,7 @@ export default class Bread extends React.Component {
     const summary1 = this.state.summary1;
     const summary2 = this.state.summary2;
     const summary3 = this.state.summary3;
+    const text1 = this.state.text1;
 
     if (this.state.scene === 0) {
 
@@ -204,6 +226,7 @@ export default class Bread extends React.Component {
         { summary1 }
         { summary2 }
         { summary3 }
+        { text1 }
 
       </View>
     );
