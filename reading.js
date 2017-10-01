@@ -20,49 +20,58 @@ export default class Reading extends React.Component {
       displayWord: "",
       xPosition: '',
       yPosiitons: -1,
-      interval: 1000,
-      previousInterval: 0,
-      pauseInterval: 9999999999999
+      paused: false,
+      interval: 500
     };
 
-    this.timer = setInterval(() => {
+    this.refreshInterval();
+  }
+
+  refreshInterval() {
+    // clear the previous before we lose reference
+    clearInterval(this.state.timer);
+
+    // set a new one
+    this.state.timer = setInterval(() => {
       this.setState(previousState => {
         return {
           displayWord: this.state.parser.nextState()
          };
       });
-    }, 280);
+    }, this.state.interval);
+  }
+
+  togglePause() {
+    console.log(this.state.paused);
+    if (this.state.paused) {
+      this.refreshInterval();
+      this.state.paused = false;
+    }
+    else {
+      clearInterval(this.state.timer);
+      this.state.paused = true;
+    }
   }
 
   deconstructEvent = (nativeEvent) => {
     switch (nativeEvent.inputEvent.eventType) {
       case "mousemove":
+        if (this.state.paused) {
+          return;
+        }
+        
         if (this.state.xPosition ==='') {
           this.setState({xPosition: nativeEvent.inputEvent.viewportX}, () => console.log(this.state.xPosition))
         } else if (this.state.xPosition < nativeEvent.inputEvent.viewportX) {
           this.setState({xPosition: nativeEvent.inputEvent.viewportX}, () => {
             if (this.state.interval > 100) {
-              this.setState({interval: this.state.interval - 10}, () => {
-                clearInterval(this.timer)
-                this.timer = setInterval(() => {
-                  this.setState(previousState => {
-                    return { displayWord: this.state.parser.nextState() };
-                  });
-                }, this.state.interval);
-              })
+              this.setState({interval: this.state.interval - 10}, this.refreshInterval);
             }
           })
         } else if (this.state.xPosition > nativeEvent.inputEvent.viewportX) {
           this.setState({xPosition: nativeEvent.inputEvent.viewportX}, () => {
             if (this.state.interval < 1000) {
-              this.setState({interval: this.state.interval + 10}, () => {
-                clearInterval(this.timer)
-                this.timer = setInterval(() => {
-                  this.setState(previousState => {
-                    return { displayWord: this.state.parser.nextState() };
-                  });
-                }, this.state.interval);
-              })
+              this.setState({interval: this.state.interval + 10}, this.refreshInterval);
             }
           })
         }
@@ -74,37 +83,6 @@ export default class Reading extends React.Component {
     }
   }
 
-  pauseToggle = (event) => {
-    console.log(this.state.interval)
-    if (this.state.interval > 99999999) {
-      this.setState({interval: this.state.previousInterval}, () => {
-        this.setState({previousInterval: 0}, () => {
-          clearInterval(this.timer)
-          this.timer = setInterval(() => {
-            this.setState(previousState => {
-              return {
-                displayWord: this.state.parser.nextState()
-               };
-            });
-          }, this.state.interval);
-        })
-      })
-    } else {
-      this.setState({previousInterval: this.state.interval}, () => {
-        this.setState({interval: this.state.pauseInterval}, () => {
-          clearInterval(this.timer)
-          this.timer = setInterval(() => {
-            this.setState(previousState => {
-              return {
-                displayWord: this.state.parser.nextState()
-               };
-            });
-          }, this.state.interval);
-        })
-      })
-    }
-  }
-
   render() {
     const angleX = this.props.angleX;
     const angleY = this.props.angleY;
@@ -113,11 +91,9 @@ export default class Reading extends React.Component {
     return (
       <View
         onInput={(event) => this.deconstructEvent(event.nativeEvent)}
+        onClick={() => this.togglePause()}
         >
         <Pano source={asset('bgimg.jpg')}/>
-        <VrButton
-          onClick={() => this.pauseToggle()}
-          >
           <Text
             style={{
               backgroundColor: 'transparent',
@@ -132,7 +108,6 @@ export default class Reading extends React.Component {
             }}>
             {this.state.displayWord}
           </Text>
-        </VrButton>
       </View>
     );
   }
